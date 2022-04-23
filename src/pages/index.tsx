@@ -3,13 +3,12 @@ import { toast } from "react-toastify"
 
 import Layout from "../components/layout"
 import { Container, Content, ContetForm, Display, Form } from '../styles/indexStyles'
-import { scopes } from "../utils/scopes"
 import { types } from "../utils/types"
 
 const IndexPage = () => {
   const [selectedType, setSelectedType] = useState(types[0]);
   const [description, setDescription] = useState('');
-  const [scope, setScope] = useState(scopes[0]);
+  const [scope, setScope] = useState('');
   const [body, setBody] = useState('');
   const [footer, setFooter] = useState('');
 
@@ -25,7 +24,7 @@ const IndexPage = () => {
     setDescription(formatText(e.target.value))
   }
 
-  function handleScopeChange(e: React.ChangeEvent<HTMLSelectElement>){
+  function handleScopeChange(e: React.ChangeEvent<HTMLInputElement>){
     setScope(formatText(e.target.value))
   }
 
@@ -98,13 +97,7 @@ const IndexPage = () => {
 
               <div className="control">
                 <label>Scope</label>
-                <select name="scope" id="scope" onChange={handleScopeChange}>
-                  {scopes.map((scope) => (
-                    <option value={scope} key={scope}>
-                      {scope}
-                    </option>
-                  ))}
-                </select>
+                <input type="text" onChange={handleScopeChange} />
               </div>
 
               <div className="control">
