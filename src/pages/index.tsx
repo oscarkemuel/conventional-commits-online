@@ -62,7 +62,13 @@ const IndexPage = () => {
 
         <Content>
           <h2>Create commits quickly ⚡️</h2>
-          <p className="text">Create your custom commits in a standardized way!!</p>
+          <p className="text">
+            Create your custom commits in a standardized way!! Learn more at {" "}
+            <a href="https://www.conventionalcommits.org/en/v1.0.0/" target="_blank">
+              Conventional Commits Docs
+            </a>
+            .
+          </p>
 
           <pre>
             <code>
