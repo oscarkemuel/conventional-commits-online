@@ -3,17 +3,18 @@ import { toast } from "react-toastify"
 
 import Layout from "../components/layout"
 import { Container, Content, ContetForm, Display, Form } from '../styles/indexStyles'
+import { scopes } from "../utils/scopes"
 import { types } from "../utils/types"
 
 const IndexPage = () => {
   const [selectedType, setSelectedType] = useState(types[0]);
   const [description, setDescription] = useState('');
-  const [scope, setScope] = useState('');
+  const [scope, setScope] = useState(scopes[0]);
   const [body, setBody] = useState('');
   const [footer, setFooter] = useState('');
 
   function formatText(text: string): string {
-    return text.toLowerCase().trim();
+    return text.trim();
   }
 
   function handleTypeChange(e: React.ChangeEvent<HTMLSelectElement>){
@@ -24,7 +25,7 @@ const IndexPage = () => {
     setDescription(formatText(e.target.value))
   }
 
-  function handleScopeChange(e: React.ChangeEvent<HTMLInputElement>){
+  function handleScopeChange(e: React.ChangeEvent<HTMLSelectElement>){
     setScope(formatText(e.target.value))
   }
 
@@ -37,7 +38,7 @@ const IndexPage = () => {
   }
 
   const commandMessage = 
-    `git commit -m "${selectedType.type}${scope && `(${scope})`}: ${description}" ${body && ` -m "${body} \n ${footer}"`}`
+    `git commit -m "${selectedType.type}${scope && `(${scope})`}: ${description}"${body && ` -m "${body}"`}${footer && ` -m "${footer}"`}`
 
 
   async function handleCopyButton() {
@@ -78,7 +79,7 @@ const IndexPage = () => {
                 <select name="type" id="type" onChange={handleTypeChange}>
                   {types.map((type) => (
                     <option value={JSON.stringify(type)} key={type.type}>
-                      {type.title} - {type.type}
+                      {type.title}
                     </option>
                   ))}
                 </select>
@@ -91,7 +92,13 @@ const IndexPage = () => {
 
               <div className="control">
                 <label>Scope</label>
-                <input type="text" onChange={handleScopeChange} />
+                <select name="scope" id="scope" onChange={handleScopeChange}>
+                  {scopes.map((scope) => (
+                    <option value={scope} key={scope}>
+                      {scope}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="control">
