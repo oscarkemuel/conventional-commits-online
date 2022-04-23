@@ -1,6 +1,6 @@
 import React, { ReactChild, ReactChildren } from "react"
-import "!style-loader!css-loader!react-toastify/dist/ReactToastify.css"
-// import 'react-toastify/dist/ReactToastify.css';
+// import "!style-loader!css-loader!react-toastify/dist/ReactToastify.css"
+import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer} from 'react-toastify';
 import { createGlobalStyle } from "styled-components"
 
