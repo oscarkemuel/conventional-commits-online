@@ -1,137 +1,177 @@
-import React, { useState } from "react"
-import { toast } from "react-toastify"
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { FaRegCopy } from "react-icons/fa";
 
-import Layout from "../components/layout"
-import { Container, Content, ContetForm, Display, Form } from '../styles/indexStyles'
-import { types } from "../utils/types"
+import Layout from "../components/layout";
+import {
+  Container,
+  Content,
+  ContetForm,
+  Display,
+  Footer,
+  Form,
+} from "../styles/indexStyles";
+import { types } from "../utils/types";
+import { Commit } from "./types";
 
-const IndexPage = () => {
-  const [selectedType, setSelectedType] = useState(types[0]);
-  const [description, setDescription] = useState('');
-  const [scope, setScope] = useState('');
-  const [body, setBody] = useState('');
-  const [footer, setFooter] = useState('');
+const urls = {
+  conventionalCommits: "https://www.conventionalcommits.org/en/v1.0.0/",
+  author: "https://oscarkemuel.com",
+};
 
-  function formatText(text: string): string {
-    return text.trim();
+const Index = () => {
+  const initialCommitData = {
+    type: types[0],
+    description: "",
+    scope: "",
+    body: "",
+    footer: "",
+  };
+  const [commitData, setCommitData] = useState<Commit>(initialCommitData);
+
+  function handleChangeValue(
+    e: React.ChangeEvent<
+      HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement
+    >
+  ) {
+    const { name, value } = e.target;
+
+    if (name === "type") {
+      setCommitData({
+        ...commitData,
+        type: JSON.parse(value),
+      });
+      return;
+    }
+
+    setCommitData({
+      ...commitData,
+      [name]: value.trim(),
+    });
   }
 
-  function handleTypeChange(e: React.ChangeEvent<HTMLSelectElement>){
-    setSelectedType(JSON.parse(e.target.value))
-  }
-
-  function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>){
-    setDescription(formatText(e.target.value))
-  }
-
-  function handleScopeChange(e: React.ChangeEvent<HTMLInputElement>){
-    setScope(formatText(e.target.value))
-  }
-
-  function handleBodyChange(e: React.ChangeEvent<HTMLTextAreaElement>){
-    setBody(formatText(e.target.value))
-  }
-
-  function handleFooterChange(e: React.ChangeEvent<HTMLTextAreaElement>){
-    setFooter(formatText(e.target.value))
-  }
-
-  const commandMessage = 
-    `git commit -m "${selectedType.type}${scope && `(${scope})`}: ${description}"${body && ` -m "${body}"`}${footer && ` -m "${footer}"`}`
-
+  const commandMessage = `git commit -m "${commitData.type.type}${
+    commitData.scope && `(${commitData.scope})`
+  }: ${commitData.description}"${
+    commitData.body && ` -m "${commitData.body}"`
+  }${commitData.footer && ` -m "${commitData.footer}"`}`;
 
   async function handleCopyButton() {
-    if(description){
-      navigator.clipboard.writeText(commandMessage)
-      .then(function() {
-        toast.success('Successfully copied')
-      }, function(err) {
-        toast.error('Failed trying to copy')
-    });
-    }else {
-      toast.error('Incomplete description')
+    if (commitData.description) {
+      navigator.clipboard
+        .writeText(commandMessage)
+        .then(() => toast.success("Successfully copied"))
+        .catch(() => toast.error("Failed trying to copy"));
+    } else {
+      toast.error("Incomplete description");
     }
   }
 
   return (
     <Layout>
-      <Container>
-        <title>Conventional Commits Online</title>
-        <h1 >Conventional Commits Online</h1>
+      <>
+        <Container>
+          <title>Conventional Commits Online</title>
+          <h1>Conventional Commits Online</h1>
 
-        <Content>
-          <h2>Create commits quickly ⚡️</h2>
-          <p className="text">
-            Create your custom commits in a standardized way!! Learn more at {" "}
-            <a href="https://www.conventionalcommits.org/en/v1.0.0/" target="_blank">
-              Conventional Commits Docs
+          <Content>
+            <h2>Create commits quickly ⚡️</h2>
+            <p className="text">
+              Create your custom commits in a standardized way!! Learn more at{" "}
+              <a href={urls.conventionalCommits} target="_blank">
+                Conventional Commits Docs
+              </a>
+              .
+            </p>
+
+            <pre>
+              <code>
+                &lt;type&gt;[optional scope]: &lt;description&gt; [optional
+                body] [optional footer(s)]
+              </code>
+            </pre>
+
+            <ContetForm>
+              <Form>
+                <div className="control">
+                  <label>Type*</label>
+                  <select name="type" id="type" onChange={handleChangeValue}>
+                    {types.map((type) => (
+                      <option value={JSON.stringify(type)} key={type.type}>
+                        {type.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="control">
+                  <label>Scope</label>
+                  <input
+                    type="text"
+                    name="scope"
+                    onChange={handleChangeValue}
+                  />
+                </div>
+
+                <div className="control">
+                  <label>Description*</label>
+                  <textarea onChange={handleChangeValue} name="description" />
+                </div>
+
+                <div className="control">
+                  <label>Body</label>
+                  <textarea onChange={handleChangeValue} name="body" />
+                </div>
+
+                <div className="control">
+                  <label>Footer(s)</label>
+                  <textarea onChange={handleChangeValue} name="footer" />
+                </div>
+              </Form>
+
+              <Display>
+                <button
+                  className="command"
+                  type="button"
+                  onClick={() => handleCopyButton()}
+                >
+                  <FaRegCopy />
+                  {commandMessage}
+                </button>
+
+                <div className="description">
+                  <p>
+                    <span>Type*:</span> {commitData.type.title}
+                  </p>
+                  <p>
+                    <span>Scope:</span> {commitData.scope}
+                  </p>
+                  <p>
+                    <span>Description*:</span> {commitData.description}
+                  </p>
+                  <p>
+                    <span>Body:</span> {commitData.body}
+                  </p>
+                  <p>
+                    <span>Footer:</span> {commitData.footer}
+                  </p>
+                </div>
+              </Display>
+            </ContetForm>
+          </Content>
+        </Container>
+
+        <Footer>
+          <p>
+            Made with 💜 by{" "}
+            <a href={urls.author} target="_blank">
+              Oscar Kemuel
             </a>
-            .
           </p>
-
-          <pre>
-            <code>
-              &lt;type&gt;[optional scope]: &lt;description&gt;
-              [optional body]
-              [optional footer(s)]
-            </code>
-          </pre>
-
-          <ContetForm>
-            <Form>
-              <div className="control">
-                <label>Type*</label>
-                <select name="type" id="type" onChange={handleTypeChange}>
-                  {types.map((type) => (
-                    <option value={JSON.stringify(type)} key={type.type}>
-                      {type.title}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="control">
-                <label>Description*</label>
-                <textarea onChange={handleDescriptionChange}/>
-              </div>
-
-              <div className="control">
-                <label>Scope</label>
-                <input type="text" onChange={handleScopeChange} />
-              </div>
-
-              <div className="control">
-                <label>Body</label>
-                <textarea onChange={handleBodyChange} />
-              </div>
-
-              <div className="control">
-                <label>Footer(s)</label>
-                <textarea onChange={handleFooterChange} />
-              </div>
-            </Form>
-
-            <Display>
-              <button className="command" type="button" onClick={() => handleCopyButton()}>
-                {commandMessage}
-              </button>
-             
-              <div className="description">
-                <p><span>Type*:</span> {selectedType.title}</p>
-                <p><span>Description*:</span> {description}</p>
-                <p><span>Scope:</span> {scope}</p>
-                <p><span>Body:</span> {body}</p>
-                <p><span>Footer:</span> {footer}</p>
-              </div>
-
-            </Display>
-          </ContetForm>
-
-          
-        </Content>
-      </Container>
+        </Footer>
+      </>
     </Layout>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default Index;

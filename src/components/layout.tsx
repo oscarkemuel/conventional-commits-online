@@ -1,8 +1,7 @@
-import React, { ReactChild, ReactChildren } from "react"
-// import "!style-loader!css-loader!react-toastify/dist/ReactToastify.css"
-import 'react-toastify/dist/ReactToastify.css';
-import {ToastContainer} from 'react-toastify';
-import { createGlobalStyle } from "styled-components"
+import React from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -72,16 +71,12 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-interface AuxProps {
-  children: ReactChild | ReactChildren;
-}
-
-export default function Layout({ children }: AuxProps) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <ToastContainer />
-      <GlobalStyle  />
+      <GlobalStyle />
       {children}
     </>
-  )
+  );
 }

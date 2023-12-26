@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.main`
   width: 100%;
   padding: 24px;
 
-  h1{
+  h1 {
     text-align: center;
     color: var(--title);
   }
@@ -17,10 +17,10 @@ export const Content = styled.section`
     color: var(--title-highlight);
   }
 
-  p.text{
+  p.text {
     margin: 1rem 0;
   }
-`
+`;
 
 export const ContetForm = styled.div`
   margin-top: 2rem;
@@ -29,10 +29,10 @@ export const ContetForm = styled.div`
   grid-template-columns: 1fr 2fr;
   gap: 1rem;
 
-  @media(max-width: 768px){
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
-`
+`;
 
 export const Form = styled.div`
   display: flex;
@@ -50,14 +50,15 @@ export const Form = styled.div`
     padding: 0.5rem;
     background: var(--background-content);
     color: var(--white);
-    border: 1px solid var(--gray-line)
+    border: 1px solid var(--gray-line);
   }
 
-  input, textarea {
+  input,
+  textarea {
     padding: 0.5rem;
     background: var(--background-content);
     color: var(--white);
-    border: 1px solid var(--gray-line)
+    border: 1px solid var(--gray-line);
   }
 `;
 
@@ -66,10 +67,9 @@ export const Display = styled.div`
   flex-direction: column;
   background: var(--background-content);
   padding: 1rem;
-  /* margin-left: 10px; */
   color: var(--green);
 
-  p{
+  p {
     line-height: 30px;
 
     span {
@@ -78,17 +78,38 @@ export const Display = styled.div`
   }
 
   button.command {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     margin-bottom: 1rem;
     background-color: transparent;
     color: var(--red);
-
-    :hover {
-      cursor: pointer;
-      color: var(--text);
-    }
   }
 
-  @media(max-width: 768px){
+  button.command:hover {
+    cursor: pointer;
+    color: var(--text);
+  }
+
+  @media (max-width: 768px) {
     margin: 0;
+  }
+`;
+
+export const Footer = styled.footer`
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  p {
+    color: var(--text);
+  }
+
+  a {
+    color: var(--green);
+    text-decoration: none;
   }
 `;
