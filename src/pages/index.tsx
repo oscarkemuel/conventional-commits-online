@@ -12,7 +12,7 @@ import {
   Form,
 } from "../styles/indexStyles";
 import { types } from "../utils/types";
-import { Commit } from "./types";
+import { Commit } from "../types/indexTypes";
 
 const urls = {
   conventionalCommits: "https://www.conventionalcommits.org/en/v1.0.0/",
